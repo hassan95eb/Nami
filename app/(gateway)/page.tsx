@@ -1,0 +1,5 @@
+import Link from "next/link";
+
+export default function LanguageGateway() {
+  return <main className="art-surface grid min-h-screen place-items-center px-6"><div className="w-full max-w-3xl text-center"><p className="mb-7 text-sm tracking-[.24em] text-accent">PARISA NAMI</p><h1 className="display-title text-5xl leading-tight sm:text-7xl">پرتفولیوی هنری<br /><span className="text-black/30 dark:text-white/30">Art Portfolio</span></h1><p className="mx-auto mt-8 max-w-lg leading-8 text-black/55 dark:text-white/55">برای ورود، زبان موردنظر را انتخاب کنید.<br /><span dir="ltr">Choose your preferred language to enter.</span></p><div className="mt-10 flex justify-center gap-3"><Link className="rounded-full bg-ink px-7 py-3 text-white transition hover:bg-accent dark:bg-white dark:text-night dark:hover:bg-accent dark:hover:text-white" href="/fa/">فارسی</Link><Link className="rounded-full border border-black/20 px-7 py-3 transition hover:border-accent hover:text-accent dark:border-white/20" href="/en/" dir="ltr">English</Link></div></div></main>;
+}
