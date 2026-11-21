@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { content } from "@/lib/content";
 import type { Locale } from "@/lib/site";
 import { ThemeToggle } from "./theme-toggle";
@@ -25,23 +26,32 @@ export function FullScreenMenu({ locale }: { locale: Locale }) {
     { href: "#contact", label: t.nav.contact },
   ];
 
+  const overlay = open ? createPortal(
+    <div className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen overflow-hidden bg-[#565656] text-white" role="dialog" aria-modal="true" aria-label={t.menu.open}>
+      <button type="button" autoFocus onClick={() => setOpen(false)} aria-label={t.menu.close} className="absolute right-5 top-5 z-10 grid size-13 place-items-center rounded-full border border-white/50 text-3xl font-extralight leading-none transition hover:bg-white hover:text-black md:right-8 md:top-8">×</button>
+
+      <div className="m-auto flex -translate-y-2 flex-col items-center text-center">
+        <nav className="flex flex-col items-center gap-5" aria-label={t.menu.open}>
+          {links.map((link) => <a key={link.href} onClick={() => setOpen(false)} className="text-xl font-light uppercase tracking-[.2em] transition hover:text-white/55 md:text-2xl" href={link.href}>{link.label}</a>)}
+        </nav>
+
+        <div className="mt-9 h-px w-20 bg-white/15" />
+        <p className="mt-6 text-xs uppercase tracking-[.16em] text-white/50">{t.menu.instagram}</p>
+        <div className="mt-5 flex items-center gap-3 text-xs uppercase tracking-[.16em]">
+          <span className="font-bold">{locale.toUpperCase()}</span><span className="text-white/30">/</span><Link href={`/${otherLocale}/`} hrefLang={otherLocale} className="text-white/45 transition hover:text-white">{otherLocale.toUpperCase()}</Link><span className="ms-2"><ThemeToggle label={t.theme} /></span>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  ) : null;
+
   return (
     <>
       <button type="button" onClick={() => setOpen(true)} aria-expanded={open} aria-label={t.menu.open} className="group grid size-12 place-items-center rounded-full border border-current/25 transition hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black">
         <span className="flex w-5 flex-col gap-1.5" aria-hidden="true"><i className="h-px w-full bg-current" /><i className="h-px w-full bg-current" /><i className="h-px w-full bg-current" /></span>
       </button>
 
-      {open && (
-        <div className="fixed inset-0 z-[100] flex min-h-screen flex-col bg-[#565656] px-6 py-5 text-white md:px-10" role="dialog" aria-modal="true" aria-label={t.menu.open}>
-          <div className="flex items-center justify-between border-b border-white/20 pb-5"><p className="text-lg font-bold tracking-[-.04em]">{t.artist}</p><button type="button" autoFocus onClick={() => setOpen(false)} aria-label={t.menu.close} className="grid size-12 place-items-center rounded-full border border-white/40 text-2xl font-light transition hover:bg-white hover:text-black">×</button></div>
-          <nav className="m-auto flex flex-col items-center gap-5 py-12 text-center" aria-label={t.menu.open}>
-            {links.map((link) => <a key={link.href} onClick={() => setOpen(false)} className="text-2xl font-light uppercase tracking-[.17em] transition hover:text-white/55 md:text-3xl" href={link.href}>{link.label}</a>)}
-          </nav>
-          <div className="mx-auto flex items-center gap-4 border-t border-white/20 px-8 pt-5 text-sm uppercase tracking-[.15em]">
-            <Link href={`/${otherLocale}/`} hrefLang={otherLocale} className="transition hover:text-white/55">{t.language}</Link><span className="text-white/25">/</span><ThemeToggle label={t.theme} />
-          </div>
-        </div>
-      )}
+      {overlay}
     </>
   );
 }
