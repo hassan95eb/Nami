@@ -3,12 +3,12 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: Tahoma, Arial, sans-serif;
-  --color-paper: #f7f3ed;
-  --color-ink: #181816;
-  --color-accent: #a13d52;
-  --color-night: #11110f;
-  --color-mist: #ded8cf;
+  --font-sans: Arial, Tahoma, sans-serif;
+  --color-paper: #fafafa;
+  --color-ink: #171715;
+  --color-accent: #625f58;
+  --color-night: #151513;
+  --color-mist: #e4e3df;
 }
 
 :root { color-scheme: light; }
@@ -17,17 +17,17 @@
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  background: #f7f3ed;
-  color: #181816;
-  font-family: Tahoma, Arial, sans-serif;
+  background: #fafafa;
+  color: #171715;
+  font-family: Arial, Tahoma, sans-serif;
   font-size: 16px;
   text-rendering: optimizeLegibility;
 }
 .dark body { background: #11110f; color: #f5f1ea; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; }
-::selection { background: #a13d52; color: white; }
-:focus-visible { outline: 3px solid #cf8b99; outline-offset: 4px; }
+::selection { background: #292927; color: white; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
 .art-surface {
   background-image:
@@ -41,6 +41,7 @@ button { font: inherit; }
 }
 .display-title { font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif; font-stretch: condensed; }
 [dir="rtl"] .display-title { font-family: Tahoma, Arial, sans-serif; }
+.section-label { font-size: .75rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in srgb, currentColor 48%, transparent); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

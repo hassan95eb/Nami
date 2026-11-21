@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { content } from "@/lib/content";
+import { content, navItems } from "@/lib/content";
 import type { Locale } from "@/lib/site";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -20,19 +20,18 @@ export function FullScreenMenu({ locale }: { locale: Locale }) {
     return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onEscape); };
   }, [open]);
 
-  const links = [
-    { href: "#works", label: t.nav.works },
-    { href: "#about", label: t.nav.about },
-    { href: "#contact", label: t.nav.contact },
-  ];
+  const links = navItems.map((item) => ({
+    href: `/${locale}/${item.slug ? `${item.slug}/` : ""}`,
+    label: item.label[locale],
+  }));
 
   const overlay = open ? createPortal(
-    <div className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen overflow-hidden bg-[#565656] text-white" role="dialog" aria-modal="true" aria-label={t.menu.open}>
+    <div className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen overflow-y-auto bg-[#242422] text-white" role="dialog" aria-modal="true" aria-label={t.menu.open}>
       <button type="button" autoFocus onClick={() => setOpen(false)} aria-label={t.menu.close} className="absolute right-5 top-5 z-10 grid size-13 place-items-center rounded-full border border-white/50 text-3xl font-extralight leading-none transition hover:bg-white hover:text-black md:right-8 md:top-8">×</button>
 
-      <div className="m-auto flex -translate-y-2 flex-col items-center text-center">
-        <nav className="flex flex-col items-center gap-5" aria-label={t.menu.open}>
-          {links.map((link) => <a key={link.href} onClick={() => setOpen(false)} className="text-xl font-light uppercase tracking-[.2em] transition hover:text-white/55 md:text-2xl" href={link.href}>{link.label}</a>)}
+      <div className="m-auto flex min-h-full flex-col items-center justify-center px-6 py-24 text-center">
+        <nav className="flex flex-col items-center gap-3 md:gap-4" aria-label={t.menu.open}>
+          {links.map((link) => <Link key={link.href} onClick={() => setOpen(false)} className="text-lg font-light uppercase tracking-[.14em] transition hover:text-white/45 md:text-2xl" href={link.href}>{link.label}</Link>)}
         </nav>
 
         <div className="mt-9 h-px w-20 bg-white/15" />
@@ -47,7 +46,7 @@ export function FullScreenMenu({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <button type="button" onClick={() => setOpen(true)} aria-expanded={open} aria-label={t.menu.open} className="group grid size-12 place-items-center rounded-full border border-current/25 transition hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black">
+      <button type="button" onClick={() => setOpen(true)} aria-expanded={open} aria-label={t.menu.open} className="group grid size-11 place-items-center rounded-full border border-current/25 transition hover:bg-current hover:text-[var(--menu-hover,#fff)]">
         <span className="flex w-5 flex-col gap-1.5" aria-hidden="true"><i className="h-px w-full bg-current" /><i className="h-px w-full bg-current" /><i className="h-px w-full bg-current" /></span>
       </button>
 

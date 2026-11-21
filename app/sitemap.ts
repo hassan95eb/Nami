@@ -1,11 +1,16 @@
 import type { MetadataRoute } from "next";
 import { localeUrl } from "@/lib/site";
+import { sitePaths } from "@/lib/content";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    { url: localeUrl("fa", "/"), lastModified: new Date(), changeFrequency: "monthly", priority: 1, alternates: { languages: { fa: localeUrl("fa", "/"), en: localeUrl("en", "/") } } },
-    { url: localeUrl("en", "/"), lastModified: new Date(), changeFrequency: "monthly", priority: 1, alternates: { languages: { fa: localeUrl("fa", "/"), en: localeUrl("en", "/") } } },
-  ];
+  return sitePaths.flatMap((path) => {
+    const suffix = path ? `/${path}/` : "/";
+    return (["fa", "en"] as const).map((locale) => ({
+      url: localeUrl(locale, suffix), lastModified: new Date(), changeFrequency: "monthly" as const,
+      priority: path ? 0.7 : 1,
+      alternates: { languages: { fa: localeUrl("fa", suffix), en: localeUrl("en", suffix) } },
+    }));
+  });
 }
